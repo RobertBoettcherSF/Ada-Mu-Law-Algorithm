@@ -16,8 +16,6 @@ procedure Tests is
       return abs (A - B) <= Margin_Of_Error;
    end Approx_Equal;
 
-   Test_Passed : Boolean;
-
 begin
    Put_Line ("=======================================================");
    Put_Line ("            MU-LAW V&V TEST SUITE RUNNER               ");
@@ -97,7 +95,7 @@ begin
    Put_Line ("  9.1 Assert X=1.5 raises Constraint_Error before evaluation");
    begin
       declare
-         Raw_Float : Float := 1.5;
+         Raw_Float : constant Float := 1.5;
          Dummy : Normalized_Signal;
       begin
          Dummy := Encode_Continuous (Normalized_Signal(Raw_Float));
@@ -136,10 +134,10 @@ begin
    Put_Line ("TEST 14 - Digital Companding Approximation Tolerance");
    Put_Line ("  14.1 Assert Decode(Encode(4096)) is within quantization error limits");
    declare
-      Original    : PCM_14_Bit := 4096;
-      Companded   : Mu_Law_8_Bit := Encode_Digital(Original);
-      Expanded    : PCM_14_Bit := Decode_Digital(Companded);
-      Error_Delta : Integer := abs (Integer(Original) - Integer(Expanded));
+      Original    : constant PCM_14_Bit := 4096;
+      Companded   : constant Mu_Law_8_Bit := Encode_Digital(Original);
+      Expanded    : constant PCM_14_Bit := Decode_Digital(Companded);
+      Error_Delta : constant Integer := abs (Integer(Original) - Integer(Expanded));
    begin
       -- In digital Mu-Law, higher amplitudes have higher quantization errors.
       -- A delta < 150 at 50% amplitude is mathematically expected due to 8-bit resolution
