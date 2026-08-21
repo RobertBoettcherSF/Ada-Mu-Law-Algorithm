@@ -95,10 +95,15 @@ begin
    Put_Line ("  9.1 Assert X=1.5 raises Constraint_Error before evaluation");
    begin
       declare
-         Raw_Float : constant Float := 1.5;
+         -- Use a function to hide the static value from the compiler's constraint checker
+         function Get_Bad_Value return Float is
+         begin
+            return 1.5;
+         end Get_Bad_Value;
+         
          Dummy : Normalized_Signal;
       begin
-         Dummy := Encode_Continuous (Normalized_Signal(Raw_Float));
+         Dummy := Encode_Continuous (Normalized_Signal(Get_Bad_Value));
          Assert (False, "Constraint_Error NOT raised for 1.5");
       end;
    exception
