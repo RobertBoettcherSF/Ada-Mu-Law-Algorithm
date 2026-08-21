@@ -35,7 +35,7 @@ package body Mu_Law is
       end if;
 
       -- F(x) = sgn(x) * ln(1 + u|x|) / ln(1 + u)
-      return Normalized_Signal (Sign(X) * Log(1.0 + Mu * abs(X)) / Log(1.0 + Mu));
+      return Normalized_Signal (Sign(X) * Log(1.0 + Mu * (abs X)) / Log(1.0 + Mu));
    end Encode_Continuous;
 
    function Decode_Continuous (Y  : Normalized_Signal;
@@ -47,7 +47,8 @@ package body Mu_Law is
       end if;
 
       -- F^-1(y) = sgn(y) * (1/u) * ((1 + u)^|y| - 1)
-      return Normalized_Signal (Sign(Y) * (1.0 / Mu) * ((1.0 + Mu)**abs(Y) - 1.0));
+      -- Note: Parantheses around (abs Y) are required due to Ada operator precedence
+      return Normalized_Signal (Sign(Y) * (1.0 / Mu) * ((1.0 + Mu) ** (abs Y) - 1.0));
    end Decode_Continuous;
 
    -- =========================================================================
